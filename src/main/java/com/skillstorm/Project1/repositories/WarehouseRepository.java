@@ -7,4 +7,5 @@ import com.skillstorm.Project1.models.Warehouse;
 @Repository
 public interface WarehouseRepository extends JpaRepository<Warehouse, Integer>  {
 
+
 }

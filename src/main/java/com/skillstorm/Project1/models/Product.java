@@ -2,6 +2,8 @@ package com.skillstorm.Project1.models;
 
 import java.util.Objects;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,11 +15,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "product")
 public class Product {
-	
-	//DONE make private and set/getter. hashcode/equals
-	//Add a set of inventory objects @OneToMany(mappedBy=inventory  class field)
-	//TODO add comments
-
 	@Column(name = "p_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +25,7 @@ public class Product {
 	private String description;
 	@Column(length = 255)
 	private String imageURL;
-	@OneToMany(mappedBy = "product")
+	@OneToMany(mappedBy = "product", cascade=CascadeType.ALL)
 	private Set<Inventory> inventory;
 
 	// Setters/Getters

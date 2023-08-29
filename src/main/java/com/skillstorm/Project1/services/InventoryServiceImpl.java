@@ -13,54 +13,16 @@ public class InventoryServiceImpl implements InventoryService{
 	
 	private InventoryRepository repo;
 
-	//TODO add @ Service to other Impls and add contructors
-	//TODO add method to call findByID, findALL, Save, delete
-	
-	
 	@Autowired
 	InventoryServiceImpl(InventoryRepository repo){
 		this.repo=repo;
 	}
 
-	@Override
-	public List<Inventory> findByWarehouseId(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Inventory> findByProductId(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Inventory findById(int w_id, int p_id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public List<Inventory> findAll() {
 		return repo.findAll();
 	}
 
-	@Override
-	public Inventory update(Inventory inventory) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Inventory save(Inventory inventory) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void deleteById(int w_id, int p_id) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

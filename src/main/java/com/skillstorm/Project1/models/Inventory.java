@@ -12,12 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Inventory {
-
-	// DONE: add many to many relationship
-	// DONE change to warehouse and product object @ManyToOne()@JoinCollumn(name =
-	// "w_id")
-	//TODO add comments
-
 	@ManyToOne
 	@MapsId("w_Id")
 	@JoinColumn(name = "w_id")
@@ -31,6 +25,23 @@ public class Inventory {
 	private int stock;
 	@EmbeddedId
 	private InventoryKey id;
+	
+	public Inventory() {
+		this.stock=0;
+		this.id= new InventoryKey();
+	}
+	
+	public Inventory productSetUp(Product product) {
+		this.id.setProductId(product.getProductId());
+		this.product = product;
+		return this; 
+	}
+	
+	public Inventory warehouseSetUp(Warehouse warehouse) {
+		this.id.setWarehouseId(warehouse.getId());
+		this.warehouse = warehouse;
+		return this; 
+	}
 	
 	
 	// Setter and Getters
