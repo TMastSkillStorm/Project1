@@ -25,15 +25,13 @@ public class ProductServiceImpl implements ProductService {
 
 	Logger log = LoggerFactory.getLogger(getClass());
 	private ProductRepository repository;
-	private WarehouseRepository ware;
-	private InventoryRepository IR;
+	private WarehouseRepository warehouseRepository;
 
 	@Autowired
-	public ProductServiceImpl(ProductRepository repository, WarehouseRepository ware, InventoryRepository IR) {
+	public ProductServiceImpl(ProductRepository repository, WarehouseRepository warehouseRepository) {
 		super();
 		this.repository = repository;
-		this.ware = ware;
-		this.IR = IR;
+		this.warehouseRepository = warehouseRepository;
 	}
 
 	@Override
@@ -47,15 +45,23 @@ public class ProductServiceImpl implements ProductService {
 		return repository.findAll();
 	}
 
+	//In order to POST inventory as well, the list of warehouses must be obtained to map them all together
+	//Know bug. will display all the same inventory item in the JSON returned but on a separate GET call will show correct JSON
 	@Override
 	public Product save(Product product) {
+		//creates and obtains product id to use
 		product = repository.save(product);
-		List<Warehouse> warehouses = ware.findAll();
+		List<Warehouse> warehouses = warehouseRepository.findAll();
 		if (!warehouses.isEmpty()) {
+			//gets inventory and makes a product to be saved in inventory
 			Set<Inventory> inventory = new HashSet<Inventory>();
 			Inventory tempInv = new Inventory();
 			tempInv.productSetUp(product);
-			for (Warehouse warehouse : warehouses) {
+			/*iterates through warehouses and maps them with the product. 
+			 * Known bug.
+			 * needed to make a repo.save call on each call otherwise only saves last
+			 * inventory item
+			 */			for (Warehouse warehouse : warehouses) {
 				inventory.add(tempInv.warehouseSetUp(warehouse));
 				product.setInventory(inventory);
 				repository.save(product);

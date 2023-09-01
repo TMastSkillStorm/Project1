@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Inventory {
+	//Set up relationship of other two tables
 	@ManyToOne
 	@MapsId("w_Id")
 	@JoinColumn(name = "w_id")
@@ -26,17 +27,20 @@ public class Inventory {
 	@EmbeddedId
 	private InventoryKey id;
 	
+	//Lines 31-84 are for auto generating inventory of product/warehouse creation 
 	public Inventory() {
 		this.stock=0;
 		this.id= new InventoryKey();
 	}
 	
+	//sets up product for key and product
 	public Inventory productSetUp(Product product) {
 		this.id.setProductId(product.getProductId());
 		this.product = product;
 		return this; 
 	}
 	
+	//sets up product for key and product
 	public Inventory warehouseSetUp(Warehouse warehouse) {
 		this.id.setWarehouseId(warehouse.getId());
 		this.warehouse = warehouse;

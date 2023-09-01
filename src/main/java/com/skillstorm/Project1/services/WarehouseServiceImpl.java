@@ -25,13 +25,13 @@ public class WarehouseServiceImpl implements WarehouseService {
 
 	Logger log = LoggerFactory.getLogger(getClass());
 	private WarehouseRepository repository;
-	private ProductRepository prod;
+	private ProductRepository productRepository;
 
 	@Autowired
-	public WarehouseServiceImpl(WarehouseRepository repository, ProductRepository prod) {
+	public WarehouseServiceImpl(WarehouseRepository repository, ProductRepository productRepository) {
 		super();
 		this.repository = repository;
-		this.prod = prod;
+		this.productRepository = productRepository;
 
 	}
 
@@ -46,15 +46,27 @@ public class WarehouseServiceImpl implements WarehouseService {
 		return repository.findAll();
 	}
 
+	// In order to POST inventory as well, the list of products must be obtained to
+	// map them all together
+	// Know bug. will display all the same inventory item in the JSON returned but
+	// on a separate GET call will show correct JSON
 	@Override
 	public Warehouse save(Warehouse warehouse) {
+		// creates and obtains warehouse id to use
 		warehouse = repository.save(warehouse);
-		List<Product> products = prod.findAll();
+		List<Product> products = productRepository.findAll();
 		if (!products.isEmpty()) {
+			// gets inventory and makes a warehouse to be saved in inventory
 			Set<Inventory> inventory = new HashSet<Inventory>();
 			Inventory tempInv = new Inventory();
 			tempInv.warehouseSetUp(warehouse);
 			for (Product product : products) {
+				/*
+				 * iterates through warehouses and maps them with the product.
+				 * Known bug. 
+				 * needed to make a repo.save call on each call otherwise only saves last inventory
+				 * item
+				 */
 				inventory.add(tempInv.productSetUp(product));
 				warehouse.setInventory(inventory);
 				repository.save(warehouse);
@@ -64,12 +76,14 @@ public class WarehouseServiceImpl implements WarehouseService {
 		return findById(warehouse.getId());
 	}
 
+	//In order to throw a 400 used response handler
 	@Override
 	public ResponseEntity<Object> update(Warehouse warehouse) {
 		try {
-			if (warehouse.stockExceedCheck()){
-					throw new OverCapacityException(warehouse);
-				
+			//checks to see if stock exceeded
+			if (warehouse.stockExceedCheck()) {
+				throw new OverCapacityException(warehouse);
+
 			}
 			return ResponseHandler.generateResponse("Success", HttpStatus.OK, repository.save(warehouse));
 		} catch (Exception e) {
@@ -84,6 +98,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 	}
 }
 
+//custom exception
 class OverCapacityException extends Exception {
 	public OverCapacityException(Warehouse warehouse) {
 		super("Max capacity of " + warehouse.getCapacity() + " exceeded. Unable to store that many products in the "

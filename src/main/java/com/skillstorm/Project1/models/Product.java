@@ -25,6 +25,7 @@ public class Product {
 	private String description;
 	@Column(length = 255)
 	private String imageURL;
+	//connection to inventory so it is created/deleted then product is 
 	@OneToMany(mappedBy = "product", cascade=CascadeType.ALL)
 	private Set<Inventory> inventory;
 

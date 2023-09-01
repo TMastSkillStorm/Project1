@@ -8,5 +8,4 @@ import com.skillstorm.Project1.models.Warehouse;
 
 public interface InventoryService {
 	List<Inventory> findAll();
-
 }

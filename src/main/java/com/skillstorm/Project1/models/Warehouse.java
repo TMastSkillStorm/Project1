@@ -31,9 +31,11 @@ public class Warehouse {
 	@Column(length = 45)
 	private String Country;
 	private int capacity;
+	//connection to inventory so it is created/deleted when warehouse is 
 	@OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
 	private Set<Inventory> inventory;
 
+	//method to check if stock exceeded
 	public boolean stockExceedCheck() {
 		int stock = 0;
 		for (Inventory i : inventory) {

@@ -30,9 +30,6 @@ import com.skillstorm.Project1.services.WarehouseService;
 @RequestMapping("v1/warehouses")
 @CrossOrigin(origins = "http://localhost:4200/")
 public class WarehouseController {
-	//DONE @GetMapping("") and @GetByID("/{id}")
-		// @PutMapping("") and @PutByID("/{id}")
-		// @DeleteMapping("") and @DeleteByID("/{id}")
 	private WarehouseService service;
 	private ProductContoller productController;
 	private Logger log = Logger.getLogger(WarehouseController.class);
@@ -43,6 +40,7 @@ public class WarehouseController {
 		this.productController=new ProductContoller();
 	}
 	
+	//REST functions
 	
 	@GetMapping("/{id}")
 	public Warehouse findById(@PathVariable int id) {
@@ -64,6 +62,7 @@ public class WarehouseController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> update(@RequestBody Warehouse warehouse, @PathVariable int id) {
+		//Need to  set id for composite key updating
 		warehouse.setId(id);
 		return service.update(warehouse);
 	}

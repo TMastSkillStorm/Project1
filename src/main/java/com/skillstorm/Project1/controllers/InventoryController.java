@@ -31,6 +31,7 @@ public class InventoryController {
 		this.service = service;
 	}
 
+	// Only have GET all for testing in Postman. All editing of this table is done through cascading
 	@GetMapping()
 	public List<Inventory> findAll() {
 		return service.findAll();

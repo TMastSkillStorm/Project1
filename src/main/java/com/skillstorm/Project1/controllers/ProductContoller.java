@@ -33,6 +33,7 @@ public class ProductContoller {
 		this.service=service;
 	}
 	
+	//REST functions
 	
 	@GetMapping("/{id}")
 	public Product findById(@PathVariable int id) {
@@ -40,7 +41,6 @@ public class ProductContoller {
 		return product.orElse(null);
 	}
 
-	
 	@GetMapping()
 	public List<Product> findAll() {
 		return service.findAll();
@@ -54,6 +54,7 @@ public class ProductContoller {
 
 	@PutMapping("/{id}")
 	public Product update(@RequestBody Product product, @PathVariable int id) {
+		//Need to  set id for composite key updating
 		product.setProductId(id);
 		return service.save(product);
 	}

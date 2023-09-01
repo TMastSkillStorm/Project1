@@ -6,7 +6,6 @@ import javax.persistence.Embeddable;
 
 
 //This class is a composite key to handle inventory being Many-to-One to both Product and Warehouse and connect them together like Many-To-Many
-
 @Embeddable
 public class InventoryKey implements Serializable{
 	@Column(name = "w_id")
